@@ -17,11 +17,11 @@ const createCollege = async function (req, res) {
        
         const { name, fullname, logolink  } = data
         //if(name === collegeModel.name){ return res.status(400).send({ status: false, msg: " name is already exist" }) }
-        if (!isValid(name)) { return res.status(400).send({ status: false, msg: " name is required" }) }
+        if (!isValid(name)) { return res.status(400).send({ status: false, msg: " Enter college name" }) }
         if (!isValid(fullname)) { return res.status(400).send({ status: false, msg: "full name is required" }) }
         if (!isValid(logolink)) { return res.status(400).send({ status: false, msg: "logolink is required" }) }
         const ExistName = await collegeModel.findOne({name : data.name})
-        if( ExistName){ return res.status(400).send({ status: false, msg: " name is already exist" }) }
+        if( ExistName){ return res.status(400).send({ status: false, msg: " College name is already exist" }) }
        
        let savedData = await collegeModel.create(data)
        return res.status(201).send({ msg: savedData })
@@ -39,7 +39,7 @@ const getData = async (req,res)=>{
 
   if(!college){return res.status(400).send({status :false,msg:"Enter college name"})}
   const savedata = await collegeModel.findOne({name :college, isDeleted :false})
-  if(!savedata){ return res.status(400).send({msg :"Enter valid name"}) }
+  if(!savedata){ return res.status(400).send({msg :"Enter valid College name"}) }
 
 
   const saveData = await collegeModel.findOne({name :college, isDeleted :false}).select({collegeId :1,name:1,fullname:1,logolink:1})

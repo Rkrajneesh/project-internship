@@ -22,30 +22,30 @@ const createIntern = async (req, res) => {
 
       
 
-    if (!validation(email)) { return res.status(400).send({ status: false, msg: "email is required" });}
+    if (!validation(email)) { return res.status(400).send({ status: false, msg: "Email is required" });}
     if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
-      return res.status(400).send({ status: false, message: "email will be valid email address " });}
+      return res.status(400).send({ status: false, message: "Email  valid email address " });}
 
       const Email = await internModel.findOne({email : data.email})
-      if( Email){ return res.status(400).send({ status: false, msg: " email is already exist" }) }
+      if( Email){ return res.status(400).send({ status: false, msg: " Email is already exist" }) }
 
 
-    if (!validation(mobile)) {return res.status(400).send({ status: false, msg: "mobile is required" });}
+    if (!validation(mobile)) {return res.status(400).send({ status: false, msg: "Mobile number is required" });}
     if (!/^(\()?\d{3}(\))?(|\s)?\d{3}(|\s)\d{4}$/.test(mobile)) {
-      return res.status(400).send({ status: false, message: "mobile will be valid number " });}
+      return res.status(400).send({ status: false, message: "Enter  valid mobile number " });}
 
       const Mobile = await internModel.findOne({mobile : data.mobile})
-        if( Mobile){ return res.status(400).send({ status: false, msg: " mobile is already exist" }) }
+        if( Mobile){ return res.status(400).send({ status: false, msg: " Mobile is already exist" }) }
 
 
 
     if (!validation(name)) {return res.status(400).send({ status: false, msg: "Name is required" });}
-    if (!validation(collegeId)) {return res.status(400).send({ status: false, msg: "collegeId is required" });}
+    if (!validation(collegeId)) {return res.status(400).send({ status: false, msg: "CollegeId is required" });}
 
     if (!isValidObjectId(collegeId)) {
       return res.status(400).send({ status: false, message: "Enter valid collageId" })} 
       const Id = await collegeModel.findOne({_id : collegeId })//.populate("CollegeData")
-      if (!Id) {return res.status(400).send({ status: false, msg: "invalid id presen"})}
+      if (!Id) {return res.status(400).send({ status: false, msg: "invalid id "})}
       //if (Id ==undefined || Id ==null) {return res.status(400).send({ status: false, msg: "invalid id present" });}
 
 
