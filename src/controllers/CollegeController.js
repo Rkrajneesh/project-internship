@@ -14,11 +14,14 @@ const createCollege = async function (req, res) {
     try {
         let data = req.body
         if (Object.keys(data) == 0) return res.status(400).send({ status: false, msg: "BAD REQUEST NO DATA PROVIDED" })
+       
         const { name, fullname, logolink  } = data
+        //if(name === collegeModel.name){ return res.status(400).send({ status: false, msg: " name is already exist" }) }
         if (!isValid(name)) { return res.status(400).send({ status: false, msg: " name is required" }) }
         if (!isValid(fullname)) { return res.status(400).send({ status: false, msg: "full name is required" }) }
         if (!isValid(logolink)) { return res.status(400).send({ status: false, msg: "logolink is required" }) }
-       
+        const ExistName = await collegeModel.findOne({name : name}).select({name:1})
+        if(name == ExistName){ return res.status(400).send({ status: false, msg: " name is already exist" }) }
        
        let savedData = await collegeModel.create(data)
        return res.status(201).send({ msg: savedData })
@@ -32,9 +35,10 @@ const createCollege = async function (req, res) {
 }
 
 const getData = async (req,res)=>{
- try{ const college = req.query.name
+ try{ const college = req.query.College
   const saveData = await collegeModel.findOne({name :college, isDeleted :false}).select({collegeId :1,name:1,fullname:1,logolink:1})
  // const {name ,fullname,logolink, interests } = saveData
+ if(college != collegeModel.name){ return res.status(400).send({msg :"Enter valid name"}) }
  const {name ,fullname,logolink } = saveData
 const interests = [];
 

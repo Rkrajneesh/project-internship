@@ -9,7 +9,14 @@ const internModel = new mongoose.Schema({
   },
   mobile: {
     type: String,
-    required: [true, "User phone number required"],
+    unique : [true,"Mobile number already exist"],
+    required: [true, "User phone number required"], validate: {
+        validator: function(v) {
+          return /^(\()?\d{3}(\))?(|\s)?\d{3}(|\s)\d{4}$/.test(v);
+        },
+        message: '{VALUE} is not a valid phone number!'
+     },
+    
   },
 
   collegeId: {
@@ -35,9 +42,4 @@ module.exports = mongoose.model("internData", internModel);
 //   message: "Please enter a valid email",
 // },
 
-//    validate: {
-//   validator: function(v) {
-//     return /^(\()?\d{3}(\))?(|\s)?\d{3}(|\s)\d{4}$/.test(v);
-//   },
-//   message: '{VALUE} is not a valid phone number!'
-// },
+//   
