@@ -1,5 +1,6 @@
 const internModel = require("../models/internModel");
 const mongoose = require("mongoose");
+const collegeModel = require("../models/collegeModel");
 
 const validation = function (value) {
   if (typeof value === undefined || typeof value === null) {return false;}
@@ -25,11 +26,16 @@ const createIntern = async (req, res) => {
     if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
       return res.status(400).send({ status: false, message: "email will be valid email address " });}
 
+      const Email = await internModel.findOne({email : data.email})
+      if( Email){ return res.status(400).send({ status: false, msg: " email is already exist" }) }
 
 
     if (!validation(mobile)) {return res.status(400).send({ status: false, msg: "mobile is required" });}
     if (!/^(\()?\d{3}(\))?(|\s)?\d{3}(|\s)\d{4}$/.test(mobile)) {
       return res.status(400).send({ status: false, message: "mobile will be valid number " });}
+
+      const Mobile = await internModel.findOne({mobile : data.mobile})
+        if( Mobile){ return res.status(400).send({ status: false, msg: " mobile is already exist" }) }
 
 
 
@@ -37,8 +43,10 @@ const createIntern = async (req, res) => {
     if (!validation(collegeId)) {return res.status(400).send({ status: false, msg: "collegeId is required" });}
 
     if (!isValidObjectId(collegeId)) {
-      return res.status(400).send({ status: false, message: "Enter valid collageId" })
-    } 
+      return res.status(400).send({ status: false, message: "Enter valid collageId" })} 
+      const Id = await collegeModel.findOne({_id : collegeId })//.populate("CollegeData")
+      if (!Id) {return res.status(400).send({ status: false, msg: "invalid id presen"})}
+      //if (Id ==undefined || Id ==null) {return res.status(400).send({ status: false, msg: "invalid id present" });}
 
 
     const SavedData = await internModel.create(data);

@@ -10,14 +10,7 @@ const internModel = new mongoose.Schema({
   mobile: {
     type: String,
     unique : [true,"Mobile number already exist"],
-    required: [true, "User phone number required"], validate: {
-        validator: function(v) {
-          return /^(\()?\d{3}(\))?(|\s)?\d{3}(|\s)\d{4}$/.test(v);
-        },
-        message: '{VALUE} is not a valid phone number!'
-     },
-    
-  },
+    required: [true, "User phone number required"], },
 
   collegeId: {
     type: mongoose.Schema.Types.ObjectId,
