@@ -20,9 +20,14 @@ const createCollege = async function (req, res) {
         if (!isValid(name)) { return res.status(400).send({ status: false, msg: " Enter college name" }) }
         if (!isValid(fullname)) { return res.status(400).send({ status: false, msg: "full name is required" }) }
         if (!isValid(logolink)) { return res.status(400).send({ status: false, msg: "logolink is required" }) }
+       
+       
         const ExistName = await collegeModel.findOne({name : data.name})
         if( ExistName){ return res.status(400).send({ status: false, msg: " College name is already exist" }) }
        
+        const ExistFullName = await collegeModel.findOne({fullname : data.fullname})
+        if( ExistFullName){ return res.status(400).send({ status: false, msg: " College Fullname is already exist" }) }
+
        let savedData = await collegeModel.create(data)
        return res.status(201).send({ msg: savedData })
     }
@@ -36,10 +41,10 @@ const createCollege = async function (req, res) {
 
 const getData = async (req,res)=>{
  try{ const college = req.query.CollegeName
-
+ 
   if(!college){return res.status(400).send({status :false,msg:"Enter college name"})}
   const savedata = await collegeModel.findOne({name :college, isDeleted :false})
-  if(!savedata){ return res.status(400).send({msg :"Enter valid College name"}) }
+  if(!savedata){ return res.status(404).send({msg :"Enter valid College name"}) }
 
 
   const saveData = await collegeModel.findOne({name :college, isDeleted :false}).select({collegeId :1,name:1,fullname:1,logolink:1})
@@ -49,11 +54,19 @@ const getData = async (req,res)=>{
 
   const Intdata = await internModel.find({collegeId:saveData, isDeleted: false}).select({_id :1,name:1,email:1,mobile:1})
    interests.push( ...Intdata )
-    const Datal = {name, fullname, logolink,interests }
-    return res.status(200).send({status:true , msg :Datal})
+    const AllData = {name, fullname, logolink,interests }
+    return res.status(200).send({status:true , Data :AllData})
 }
 catch(error){
   return res.status(500).send({status:false,msg :error})
 }}
 module.exports.getData = getData
 module.exports.createCollege = createCollege 
+
+
+
+// try{ const college = req.query.CollegeId
+//   if(!college){return res.status(400).send({status :false,msg:"Enter college Id"})}
+//  const savedata = await collegeModel.findOne({_id :college, isDeleted :false})
+//   if(!savedata){ return res.status(400).send({msg :"Enter valid College Id"}) }
+//  const saveData = await collegeModel.findOne({_id:college, isDeleted :false}).select({collegeId :1,name:1,fullname:1,logolink:1})

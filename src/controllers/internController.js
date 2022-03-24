@@ -20,11 +20,11 @@ const createIntern = async (req, res) => {
       return res.status(400).send({ staus: false, msg: "Input the data " });   }
       const { name, email, mobile, collegeId } = data;
 
-      
+      if (!validation(name)) {return res.status(400).send({ status: false, msg: "Name is required" });}
 
     if (!validation(email)) { return res.status(400).send({ status: false, msg: "Email is required" });}
     if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
-      return res.status(400).send({ status: false, message: "Email  valid email address " });}
+      return res.status(404).send({ status: false, message: "Enter  valid email address " });}
 
       const Email = await internModel.findOne({email : data.email})
       if( Email){ return res.status(400).send({ status: false, msg: " Email is already exist" }) }
@@ -32,20 +32,19 @@ const createIntern = async (req, res) => {
 
     if (!validation(mobile)) {return res.status(400).send({ status: false, msg: "Mobile number is required" });}
     if (!/^(\()?\d{3}(\))?(|\s)?\d{3}(|\s)\d{4}$/.test(mobile)) {
-      return res.status(400).send({ status: false, message: "Enter  valid mobile number " });}
+      return res.status(404).send({ status: false, message: "Enter  valid mobile number " });}
+
 
       const Mobile = await internModel.findOne({mobile : data.mobile})
         if( Mobile){ return res.status(400).send({ status: false, msg: " Mobile is already exist" }) }
 
 
-
-    if (!validation(name)) {return res.status(400).send({ status: false, msg: "Name is required" });}
     if (!validation(collegeId)) {return res.status(400).send({ status: false, msg: "CollegeId is required" });}
 
     if (!isValidObjectId(collegeId)) {
       return res.status(400).send({ status: false, message: "Enter valid collageId" })} 
       const Id = await collegeModel.findOne({_id : collegeId })//.populate("CollegeData")
-      if (!Id) {return res.status(400).send({ status: false, msg: "invalid id "})}
+      if (!Id) {return res.status(404).send({ status: false, msg: "This CollegeId is invalid "})}
       //if (Id ==undefined || Id ==null) {return res.status(400).send({ status: false, msg: "invalid id present" });}
 
 

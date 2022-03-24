@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const internModel = new mongoose.Schema({
-  name: { type: String, trim: true, required: [true , "Enter your Name" ]},
+  name: { type: String, trim: true, required: true },
   email: {
     type: String,
     required: [true, "Enter the Email id"],
